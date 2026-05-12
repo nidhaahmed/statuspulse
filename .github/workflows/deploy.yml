@@ -66,4 +66,9 @@ jobs:
       - name: Deployment Notification
         if: always()
         run: |
-          echo "Deployment pipeline completed"
+          STATUS="${{ job.status }}"
+
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d "{\"content\":\"🚀 StatusPulse deployment finished with status: $STATUS\"}" \
+          ${{ secrets.DISCORD_WEBHOOK }}
