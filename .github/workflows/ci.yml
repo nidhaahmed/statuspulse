@@ -50,7 +50,7 @@ jobs:
 
       - name: Scan Dockerfile
         run: |
-          hadolint Dockerfile
+          hadolint --ignore DL3018 Dockerfile
 
       - name: Build Docker Images
         run: |

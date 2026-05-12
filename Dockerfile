@@ -5,7 +5,8 @@ WORKDIR /app
 RUN apk add --no-cache \
     gcc \
     musl-dev \
-    postgresql-dev
+    postgresql-dev \
+    && pip install --no-cache-dir --upgrade pip
 
 COPY app/requirements.txt .
 
@@ -17,15 +18,14 @@ WORKDIR /app
 
 RUN apk add --no-cache \
     curl \
-    postgresql-libs
-
-RUN adduser -D appuser
+    postgresql-libs \
+    && adduser -D appuser
 
 COPY --from=builder /root/.local /home/appuser/.local
 
 COPY app/ .
 
-ENV PATH=/home/appuser/.local/bin:$PATH
+ENV PATH="/home/appuser/.local/bin:$PATH"
 
 USER appuser
 
