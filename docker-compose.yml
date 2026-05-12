@@ -1,6 +1,7 @@
 services:
   app:
-    build: .
+    # build: .
+    image: ghcr.io/nidhaahmed/statuspulse:latest
     container_name: statuspulse-app
     ports:
       - "8000:8000"
@@ -50,9 +51,37 @@ services:
     networks:
       - statuspulse-network
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: statuspulse-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+    networks:
+      - statuspulse-network
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: statuspulse-uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime_kuma_data:/app/data
+    restart: unless-stopped
+    networks:
+      - statuspulse-network
+
 volumes:
   postgres_data:
-
+  caddy_data:
+  caddy_config:
+  uptime_kuma_data:
 networks:
   statuspulse-network:
     driver: bridge

@@ -1,0 +1,8 @@
+Port 2222
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+MaxAuthTries 3
+PermitEmptyPasswords no
+X11Forwarding no
+AllowTcpForwarding no

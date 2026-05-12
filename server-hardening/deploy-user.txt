@@ -1,0 +1,8 @@
+Created non-root deployment user:
+
+username: deployer
+
+Commands used:
+
+sudo adduser deployer
+sudo usermod -aG docker deployer
