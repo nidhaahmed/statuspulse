@@ -1,10 +1,11 @@
+import json
+import os
+from datetime import datetime, timezone
+
+import psycopg2
+import redis
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from datetime import datetime, timezone
-import os
-import redis
-import psycopg2
-import json
 
 app = FastAPI(title="StatusPulse", version="1.0.0")
 
