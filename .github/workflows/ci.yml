@@ -25,6 +25,19 @@ jobs:
         run: |
           pip install ruff
 
+      - name: Create Environment File
+        run: |
+          cat <<EOF > .env
+          DB_HOST=postgres
+          DB_PORT=5432
+          DB_NAME=statuspulse
+          DB_USER=statuspulse
+          DB_PASSWORD=statuspulse123
+          REDIS_HOST=redis
+          REDIS_PORT=6379
+          REDIS_PASSWORD=
+          EOF
+
       - name: Lint Python Code
         run: |
           ruff check app/
