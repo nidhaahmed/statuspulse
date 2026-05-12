@@ -6,45 +6,7 @@ Production-style monitoring and incident management platform built with FastAPI,
 
 # Architecture Diagram
 
-```text
-                         ┌─────────────────────┐
-                         │    GitHub Actions   │
-                         │  CI/CD Pipelines    │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │ GitHub Container    │
-                         │ Registry (GHCR)     │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-┌────────────────────────────────────────────────────────────────┐
-│                        Docker Network                         │
-│                                                                │
-│   ┌──────────────┐       ┌────────────────┐                    │
-│   │    Caddy     │──────▶│  FastAPI App   │                    │
-│   │ Reverse Proxy│       │  StatusPulse   │                    │
-│   └──────┬───────┘       └───────┬────────┘                    │
-│          │                       │                             │
-│          │                       │                             │
-│          ▼                       ▼                             │
-│   HTTPS/TLS               PostgreSQL DB                        │
-│                                  │                             │
-│                                  ▼                             │
-│                               Redis                            │
-│                                                                │
-│   ┌──────────────────────────────────────────────────────┐      │
-│   │                  Uptime Kuma                        │      │
-│   │      Health Monitoring + Public Status Page         │      │
-│   └──────────────────────────────────────────────────────┘      │
-│                                                                │
-│   ┌──────────────────────────────────────────────────────┐      │
-│   │          Health Monitor Cron Container              │      │
-│   │    Automated checks + alerts + operational logs     │      │
-│   └──────────────────────────────────────────────────────┘      │
-└────────────────────────────────────────────────────────────────┘
-```
+![alt text](<Untitled Diagram.drawio (3).png>)
 
 ---
 
