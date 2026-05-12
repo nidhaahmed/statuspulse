@@ -1,0 +1,1 @@
+*/5 * * * * /bin/bash /scripts/health-monitor.sh >> /logs/cron.log 2>&1
