@@ -2,28 +2,37 @@ FROM python:3.11-alpine AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache \
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
     gcc \
     musl-dev \
     postgresql-dev \
-    && pip install --no-cache-dir --upgrade pip
+    libffi-dev \
+    && pip install --no-cache-dir --upgrade pip setuptools wheel
 
 COPY app/requirements.txt .
 
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir \
+    --user \
+    -r requirements.txt
 
 FROM python:3.11-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache \
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
     curl \
     postgresql-libs \
-    && adduser -D appuser
+    libffi \
+    && addgroup -S appgroup \
+    && adduser -S appuser -G appgroup
 
 COPY --from=builder /root/.local /home/appuser/.local
 
 COPY app/ .
+
+RUN chown -R appuser:appgroup /app
 
 ENV PATH="/home/appuser/.local/bin:$PATH"
 

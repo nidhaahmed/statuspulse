@@ -1,0 +1,14 @@
+Simulated rate limiting configuration:
+
+- Intended limit:
+  100 requests/minute per IP
+
+- Local environment limitation:
+  Default Caddy image does not include the rate_limit module.
+
+- Mitigation:
+  Security headers and reverse proxy protections remain enabled.
+
+- In production:
+  A custom xcaddy build with the caddy-ratelimit plugin would enforce:
+  100 requests/minute per client IP.
