@@ -1,0 +1,54 @@
+---
+- name: Configure StatusPulse Infrastructure
+  hosts: statuspulse
+  become: false
+
+  vars:
+    project_dir: "{{ lookup('env', 'PWD') }}"
+
+  tasks:
+
+    - name: Create logs directory
+      file:
+        path: "{{ project_dir }}/logs"
+        state: directory
+
+    - name: Create backups directory
+      file:
+        path: "{{ project_dir }}/backups"
+        state: directory
+
+    - name: Pull latest Docker images
+      command: docker compose pull
+      args:
+        chdir: "{{ project_dir }}"
+
+    - name: Start infrastructure stack
+      command: docker compose up -d
+      args:
+        chdir: "{{ project_dir }}"
+
+    - name: Verify app container is running
+      shell: docker ps --format '{{ "{{.Names}}" }}' | grep statuspulse-app
+      register: app_check
+      changed_when: false
+
+    - name: Verify postgres container is running
+      shell: docker ps --format '{{ "{{.Names}}" }}' | grep statuspulse-postgres
+      register: postgres_check
+      changed_when: false
+
+    - name: Verify redis container is running
+      shell: docker ps --format '{{ "{{.Names}}" }}' | grep statuspulse-redis
+      register: redis_check
+      changed_when: false
+
+    - name: Verify caddy container is running
+      shell: docker ps --format '{{ "{{.Names}}" }}' | grep statuspulse-caddy
+      register: caddy_check
+      changed_when: false
+
+    - name: Verify uptime-kuma container is running
+      shell: docker ps --format '{{ "{{.Names}}" }}' | grep statuspulse-uptime-kuma
+      register: kuma_check
+      changed_when: false
